@@ -59,7 +59,7 @@ export class Input {
         this.dirStack = this.dirStack.filter((d) => d !== btn)
         this.dirStack.unshift(btn)
         this.stickyDir = btn
-        this.stickyLeft = 6
+        this.stickyLeft = 16
       }
     } else {
       this.down.delete(btn)

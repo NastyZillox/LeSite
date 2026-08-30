@@ -423,6 +423,9 @@ export class Game {
       })
       return true
     }
+    // Check if standing on a door/stairs tile
+    const currentTile = tileAt(m, this.tx, this.ty)
+    if ((currentTile === 'door' || currentTile === 'stairs') && this.applyWarpAt(this.tx, this.ty)) return true
     return false
   }
 
