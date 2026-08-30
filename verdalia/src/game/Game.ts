@@ -349,6 +349,7 @@ export class Game {
     const d = DIRS[dir]
     const nx = this.tx + d.x
     const ny = this.ty + d.y
+    if (this.applyWarpAt(nx, ny)) return
     if (this.blocked(nx, ny)) {
       if (this.bumpT === 0) {
         this.sfx.bump()
@@ -356,7 +357,6 @@ export class Game {
       }
       return
     }
-    if (this.applyWarpAt(nx, ny)) return
     this.moving = true
     this.moveDir = dir
     this.moveLeft = TILE
@@ -994,7 +994,7 @@ export class Game {
     for (const s of spr) s.draw()
 
     if (this.mode === 'overworld') {
-      drawText(ctx, m.name, 4, 4, '#f8f8f0', 1)
+      drawText(ctx, `${m.name} ${this.tx},${this.ty}`, 4, 4, '#f8f8f0', 1)
     }
   }
 
