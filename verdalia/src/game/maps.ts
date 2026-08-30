@@ -231,6 +231,7 @@ function buildVillage(): GameMap {
   vline(t, 17, 12, 7, 'path')
 
   house(t, 9, 2, 7)
+  set(t, 11, 5, 'door')
   house(t, 2, 8, 5)
   house(t, 2, 14, 5)
   house(t, 17, 8, 5)
@@ -254,6 +255,7 @@ function buildVillage(): GameMap {
     music: 'town',
     warps: {
       [key(4, 11)]: { map: 'home', x: 6, y: 9, facing: 'up' },
+      [key(11, 5)]: { map: 'lab', x: 6, y: 10, facing: 'up' },
       [key(12, 5)]: { map: 'lab', x: 6, y: 10, facing: 'up' },
       [key(4, 17)]: { map: 'center', x: 5, y: 8, facing: 'up' },
       [key(17, 17)]: { map: 'gym', x: 6, y: 14, facing: 'up' },

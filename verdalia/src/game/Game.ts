@@ -405,6 +405,15 @@ export class Game {
       this.pickStarter(x)
       return
     }
+    const warp = m.warps[key(x, y)]
+    if (warp && (t === 'door' || t === 'stairs')) {
+      if (warp.map === 'route1' && !this.flags.gotStarter) {
+        this.openDialogue('Les herbes de la Route 1 sont dangereuses. Va d abord voir le Prof. Sauge !')
+        return
+      }
+      this.enterMap(warp.map, warp.x, warp.y, warp.facing ?? this.facing)
+      return
+    }
     if (t === 'pc') {
       this.openDialogue('PC de Bourgfeuillage. Sauvegarder la partie ?', {
         choices: [
