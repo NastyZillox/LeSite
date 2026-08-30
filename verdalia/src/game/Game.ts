@@ -336,11 +336,12 @@ export class Game {
       return
     }
 
-    if (this.input.pressed.has('a')) this.tryInteract()
+    if (this.input.pressed.has('a') && this.tryInteract()) return
 
     const dir = this.input.dir()
     if (!dir) {
       this.walkFrame = 0
+      this.applyWarpAt(this.tx, this.ty)
       return
     }
     this.facing = dir
@@ -355,28 +356,35 @@ export class Game {
       }
       return
     }
+    if (this.applyWarpAt(nx, ny)) return
     this.moving = true
     this.moveDir = dir
     this.moveLeft = TILE
     this.animT = 0
   }
 
-  private afterStep() {
+  private applyWarpAt(x: number, y: number): boolean {
     const m = getMap(this.mapId)
-    const warp = m.warps[key(this.tx, this.ty)]
-    if (warp) {
-      if (warp.map === 'route1' && !this.flags.gotStarter) {
+    const warp = m.warps[key(x, y)]
+    if (!warp) return false
+    if (warp.map === 'route1' && !this.flags.gotStarter) {
+      if (y === this.ty && x === this.tx) {
         this.ty = this.ty + 1
         this.px = this.tx * TILE
         this.py = this.ty * TILE
         this.facing = 'down'
-        this.openDialogue('Les herbes de la Route 1 sont dangereuses. Va d abord voir le Prof. Sauge !')
-        return
       }
-      this.sfx.confirm()
-      this.enterMap(warp.map, warp.x, warp.y, warp.facing ?? this.facing)
-      return
+      this.openDialogue('Les herbes de la Route 1 sont dangereuses. Va d abord voir le Prof. Sauge !')
+      return true
     }
+    this.sfx.confirm()
+    this.enterMap(warp.map, warp.x, warp.y, warp.facing ?? this.facing)
+    return true
+  }
+
+  private afterStep() {
+    if (this.applyWarpAt(this.tx, this.ty)) return
+    const m = getMap(this.mapId)
     const tile = tileAt(m, this.tx, this.ty)
     if (tile === 'tall' && this.flags.gotStarter && this.party.some((p) => p.hp > 0) && Math.random() < 0.14) {
       const enc = spawnWild(m)
@@ -384,7 +392,7 @@ export class Game {
     }
   }
 
-  private tryInteract() {
+  private tryInteract(): boolean {
     const d = DIRS[this.facing]
     const x = this.tx + d.x
     const y = this.ty + d.y
@@ -392,28 +400,20 @@ export class Game {
     if (npc) {
       npc.facing = opposite(this.facing)
       this.talk(npc.id)
-      return
+      return true
     }
     const m = getMap(this.mapId)
     const sign = m.signs[key(x, y)]
     if (sign) {
       this.openDialogue(sign)
-      return
+      return true
     }
     const t = tileAt(m, x, y)
     if (t === 'orb') {
       this.pickStarter(x)
-      return
+      return true
     }
-    const warp = m.warps[key(x, y)]
-    if (warp && (t === 'door' || t === 'stairs')) {
-      if (warp.map === 'route1' && !this.flags.gotStarter) {
-        this.openDialogue('Les herbes de la Route 1 sont dangereuses. Va d abord voir le Prof. Sauge !')
-        return
-      }
-      this.enterMap(warp.map, warp.x, warp.y, warp.facing ?? this.facing)
-      return
-    }
+    if ((t === 'door' || t === 'stairs') && this.applyWarpAt(x, y)) return true
     if (t === 'pc') {
       this.openDialogue('PC de Bourgfeuillage. Sauvegarder la partie ?', {
         choices: [
@@ -421,9 +421,9 @@ export class Game {
           { label: 'Non', fn: () => {} },
         ],
       })
-      return
+      return true
     }
-    this.sfx.bump()
+    return false
   }
 
   private pickStarter(x: number) {
