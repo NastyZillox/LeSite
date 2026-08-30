@@ -127,8 +127,8 @@ function buildHome(): GameMap {
       [key(2, 1)]: { map: 'bedroom', x: 6, y: 6, facing: 'down' },
       [key(1, 2)]: { map: 'bedroom', x: 6, y: 6, facing: 'down' },
       [key(2, 2)]: { map: 'bedroom', x: 6, y: 6, facing: 'down' },
-      [key(6, 11)]: { map: 'village', x: 5, y: 13, facing: 'down' },
-      [key(7, 11)]: { map: 'village', x: 5, y: 13, facing: 'down' },
+      [key(6, 11)]: { map: 'village', x: 4, y: 12, facing: 'down' },
+      [key(7, 11)]: { map: 'village', x: 4, y: 12, facing: 'down' },
     },
     npcs: [{ id: 'mom', x: 9, y: 6, sprite: 'mom', facing: 'left' }],
   })
@@ -155,8 +155,8 @@ function buildLab(): GameMap {
     indoor: true,
     music: 'indoor',
     warps: {
-      [key(6, 11)]: { map: 'village', x: 12, y: 7, facing: 'down' },
-      [key(7, 11)]: { map: 'village', x: 12, y: 7, facing: 'down' },
+      [key(6, 11)]: { map: 'village', x: 12, y: 6, facing: 'down' },
+      [key(7, 11)]: { map: 'village', x: 12, y: 6, facing: 'down' },
     },
     npcs: [{ id: 'prof', x: 10, y: 4, sprite: 'prof', facing: 'down' }],
     signs: {
@@ -185,8 +185,8 @@ function buildCenter(): GameMap {
     indoor: true,
     music: 'indoor',
     warps: {
-      [key(5, 9)]: { map: 'village', x: 5, y: 17, facing: 'down' },
-      [key(6, 9)]: { map: 'village', x: 5, y: 17, facing: 'down' },
+      [key(5, 9)]: { map: 'village', x: 4, y: 18, facing: 'down' },
+      [key(6, 9)]: { map: 'village', x: 4, y: 18, facing: 'down' },
     },
     npcs: [{ id: 'nurse', x: 5, y: 2, sprite: 'nurse', facing: 'down' }],
   })
@@ -207,7 +207,7 @@ function buildGym(): GameMap {
     indoor: true,
     music: 'gym',
     warps: {
-      [key(6, 15)]: { map: 'village', x: 18, y: 14, facing: 'down' },
+      [key(6, 15)]: { map: 'village', x: 17, y: 18, facing: 'down' },
     },
     npcs: [
       { id: 'gym1', x: 4, y: 8, sprite: 'boy', facing: 'down' },
@@ -217,72 +217,57 @@ function buildGym(): GameMap {
 }
 
 function buildVillage(): GameMap {
-  const t = grid(24, 20, 'grass')
+  const t = grid(24, 22, 'grass')
   borderTrees(t)
 
-  // North gate to route
   set(t, 11, 0, 'path')
   set(t, 12, 0, 'path')
-  set(t, 11, 1, 'path')
-  set(t, 12, 1, 'path')
+  vline(t, 11, 1, 20, 'path')
+  vline(t, 12, 1, 20, 'path')
+  hline(t, 3, 6, 18, 'path')
+  hline(t, 3, 12, 18, 'path')
+  hline(t, 3, 18, 16, 'path')
+  vline(t, 4, 8, 11, 'path')
+  vline(t, 17, 12, 7, 'path')
 
-  // Main paths
-  vline(t, 11, 1, 17, 'path')
-  vline(t, 12, 1, 17, 'path')
-  hline(t, 4, 8, 16, 'path')
-  hline(t, 4, 12, 16, 'path')
-  hline(t, 4, 16, 8, 'path')
-  vline(t, 5, 8, 9, 'path')
-  vline(t, 18, 8, 6, 'path')
-
-  // Lab north
   house(t, 9, 2, 7)
-  // Player house SW
-  house(t, 3, 9, 5)
-  // Center further south
-  house(t, 3, 13, 5, 'roof')
-  set(t, 4, 14, 'hwall')
-  set(t, 5, 14, 'hwall')
-  set(t, 6, 14, 'hwall')
-  // Gym east
-  rect(t, 15, 9, 7, 2, 'roof')
-  rect(t, 15, 11, 7, 3, 'hwall')
-  set(t, 18, 13, 'door')
-  // Neighbor house
-  house(t, 16, 3, 5)
+  house(t, 2, 8, 5)
+  house(t, 2, 14, 5)
+  house(t, 17, 8, 5)
+  rect(t, 14, 13, 7, 2, 'roof')
+  rect(t, 14, 15, 7, 3, 'hwall')
+  set(t, 17, 17, 'door')
 
-  // Flowers / fence
   set(t, 8, 7, 'flower')
   set(t, 14, 7, 'flower')
-  set(t, 9, 11, 'flower')
+  set(t, 8, 13, 'flower')
   set(t, 14, 11, 'flower')
-  set(t, 8, 17, 'flower')
-  set(t, 9, 17, 'flower')
-  set(t, 14, 17, 'flower')
+  set(t, 8, 19, 'flower')
+  set(t, 9, 19, 'flower')
+  set(t, 20, 19, 'flower')
   hline(t, 1, 5, 3, 'fence')
-  hline(t, 20, 7, 3, 'fence')
-
-  set(t, 10, 8, 'sign')
-  set(t, 13, 15, 'sign')
+  hline(t, 20, 5, 3, 'fence')
+  set(t, 10, 7, 'sign')
+  set(t, 16, 19, 'sign')
 
   return map('village', 'Bourgfeuillage', t, {
     music: 'town',
     warps: {
-      [key(5, 12)]: { map: 'home', x: 6, y: 9, facing: 'up' },
+      [key(4, 11)]: { map: 'home', x: 6, y: 9, facing: 'up' },
       [key(12, 5)]: { map: 'lab', x: 6, y: 10, facing: 'up' },
-      [key(5, 16)]: { map: 'center', x: 5, y: 8, facing: 'up' },
-      [key(18, 13)]: { map: 'gym', x: 6, y: 14, facing: 'up' },
+      [key(4, 17)]: { map: 'center', x: 5, y: 8, facing: 'up' },
+      [key(17, 17)]: { map: 'gym', x: 6, y: 14, facing: 'up' },
       [key(11, 0)]: { map: 'route1', x: 7, y: 26, facing: 'up' },
       [key(12, 0)]: { map: 'route1', x: 8, y: 26, facing: 'up' },
     },
     npcs: [
       { id: 'kid', x: 10, y: 10, sprite: 'kid', facing: 'down' },
-      { id: 'lass', x: 15, y: 15, sprite: 'lass', facing: 'left' },
-      { id: 'clerk', x: 19, y: 8, sprite: 'clerk', facing: 'down' },
+      { id: 'lass', x: 13, y: 12, sprite: 'lass', facing: 'left' },
+      { id: 'clerk', x: 20, y: 12, sprite: 'clerk', facing: 'down' },
     ],
     signs: {
-      [key(10, 8)]: 'Bourgfeuillage — Un village entre bois et collines.',
-      [key(13, 15)]: 'Arène Roche — Champion: Granit',
+      [key(10, 7)]: 'Bourgfeuillage — Un village entre bois et collines.',
+      [key(16, 19)]: 'Arène Roche — Champion: Granit',
     },
   })
 }
