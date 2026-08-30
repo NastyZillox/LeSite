@@ -386,7 +386,7 @@ export class Game {
     if (this.applyWarpAt(this.tx, this.ty)) return
     const m = getMap(this.mapId)
     const tile = tileAt(m, this.tx, this.ty)
-    if (tile === 'tall' && this.flags.gotStarter && this.party.some((p) => p.hp > 0) && Math.random() < 0.14) {
+    if (tile === 'tall' && this.flags.gotStarter && this.party.some((p) => p.hp > 0) && Math.random() < 0.22) {
       const enc = spawnWild(m)
       if (enc) this.beginWild(enc.species, enc.level)
     }
@@ -994,7 +994,7 @@ export class Game {
     for (const s of spr) s.draw()
 
     if (this.mode === 'overworld') {
-      drawText(ctx, `${m.name} ${this.tx},${this.ty}`, 4, 4, '#f8f8f0', 1)
+      drawText(ctx, m.name, 4, 4, '#f8f8f0', 1)
     }
   }
 
