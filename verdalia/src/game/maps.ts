@@ -85,12 +85,16 @@ function buildBedroom(): GameMap {
   set(t, 6, 7, 'mat')
   set(t, 5, 8, 'stairs')
   set(t, 6, 8, 'stairs')
+  set(t, 5, 9, 'stairs')
+  set(t, 6, 9, 'stairs')
   return map('bedroom', 'Chambre', t, {
     indoor: true,
     music: 'indoor',
     warps: {
-      [key(5, 8)]: { map: 'home', x: 2, y: 2, facing: 'down' },
-      [key(6, 8)]: { map: 'home', x: 3, y: 2, facing: 'down' },
+      [key(5, 8)]: { map: 'home', x: 7, y: 8, facing: 'down' },
+      [key(6, 8)]: { map: 'home', x: 7, y: 8, facing: 'down' },
+      [key(5, 9)]: { map: 'home', x: 7, y: 8, facing: 'down' },
+      [key(6, 9)]: { map: 'home', x: 7, y: 8, facing: 'down' },
     },
     signs: {
       [key(10, 5)]: 'PC: sauvegarde depuis le menu START, ou parle à l infirmerie.',
@@ -102,7 +106,7 @@ function buildHome(): GameMap {
   const t = grid(14, 12, 'floor')
   rect(t, 0, 0, 14, 12, 'wall')
   rect(t, 1, 1, 12, 10, 'floor')
-  rect(t, 1, 1, 3, 2, 'stairs')
+  rect(t, 1, 1, 2, 2, 'stairs')
   set(t, 10, 1, 'window')
   set(t, 11, 1, 'window')
   set(t, 4, 4, 'table')
@@ -119,10 +123,12 @@ function buildHome(): GameMap {
     indoor: true,
     music: 'indoor',
     warps: {
-      [key(2, 1)]: { map: 'bedroom', x: 5, y: 7, facing: 'up' },
-      [key(3, 1)]: { map: 'bedroom', x: 6, y: 7, facing: 'up' },
-      [key(6, 11)]: { map: 'village', x: 5, y: 12, facing: 'down' },
-      [key(7, 11)]: { map: 'village', x: 5, y: 12, facing: 'down' },
+      [key(1, 1)]: { map: 'bedroom', x: 6, y: 6, facing: 'down' },
+      [key(2, 1)]: { map: 'bedroom', x: 6, y: 6, facing: 'down' },
+      [key(1, 2)]: { map: 'bedroom', x: 6, y: 6, facing: 'down' },
+      [key(2, 2)]: { map: 'bedroom', x: 6, y: 6, facing: 'down' },
+      [key(6, 11)]: { map: 'village', x: 5, y: 13, facing: 'down' },
+      [key(7, 11)]: { map: 'village', x: 5, y: 13, facing: 'down' },
     },
     npcs: [{ id: 'mom', x: 9, y: 6, sprite: 'mom', facing: 'left' }],
   })
@@ -179,8 +185,8 @@ function buildCenter(): GameMap {
     indoor: true,
     music: 'indoor',
     warps: {
-      [key(5, 9)]: { map: 'village', x: 5, y: 16, facing: 'down' },
-      [key(6, 9)]: { map: 'village', x: 5, y: 16, facing: 'down' },
+      [key(5, 9)]: { map: 'village', x: 5, y: 17, facing: 'down' },
+      [key(6, 9)]: { map: 'village', x: 5, y: 17, facing: 'down' },
     },
     npcs: [{ id: 'nurse', x: 5, y: 2, sprite: 'nurse', facing: 'down' }],
   })
@@ -201,7 +207,7 @@ function buildGym(): GameMap {
     indoor: true,
     music: 'gym',
     warps: {
-      [key(6, 15)]: { map: 'village', x: 18, y: 13, facing: 'down' },
+      [key(6, 15)]: { map: 'village', x: 18, y: 14, facing: 'down' },
     },
     npcs: [
       { id: 'gym1', x: 4, y: 8, sprite: 'boy', facing: 'down' },
@@ -262,7 +268,7 @@ function buildVillage(): GameMap {
   return map('village', 'Bourgfeuillage', t, {
     music: 'town',
     warps: {
-      [key(5, 12)]: { map: 'home', x: 6, y: 10, facing: 'up' },
+      [key(5, 12)]: { map: 'home', x: 6, y: 9, facing: 'up' },
       [key(12, 5)]: { map: 'lab', x: 6, y: 10, facing: 'up' },
       [key(5, 16)]: { map: 'center', x: 5, y: 8, facing: 'up' },
       [key(18, 13)]: { map: 'gym', x: 6, y: 14, facing: 'up' },

@@ -64,6 +64,7 @@ export const SOLID: ReadonlySet<TileId> = new Set([
   'shelf',
   'window',
   'void',
+  'orb',
 ])
 
 export type MoveId =

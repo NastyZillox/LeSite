@@ -220,9 +220,7 @@ export class Game {
         this.newGame()
         this.startFade(() => {
           this.mode = 'overworld'
-          this.openDialogue(
-            "Bienvenue à Bourgfeuillage !\nTa chambre t'attend. Descends voir ta mère, puis le Prof. Sauge.",
-          )
+          this.openDialogue('Bienvenue à Bourgfeuillage ! Descends les escaliers, parle à ta mère, puis va voir le Prof. Sauge au labo.')
         })
       }
     }
@@ -319,7 +317,7 @@ export class Game {
       return
     }
     if (this.moving) {
-      const sp = this.running ? 2 : 1
+      const sp = this.running ? 4 : 2
       const d = DIRS[this.moveDir]
       this.px += d.x * sp
       this.py += d.y * sp
@@ -567,8 +565,8 @@ export class Game {
   openDialogue(text: string, opts?: { choices?: Choice[]; onClose?: () => void }) {
     const lines = wrapText(text, 34)
     const pages: string[] = []
-    for (let i = 0; i < lines.length; i += 2) {
-      pages.push(lines.slice(i, i + 2).join('\n'))
+    for (let i = 0; i < lines.length; i += 3) {
+      pages.push(lines.slice(i, i + 3).join('\n'))
     }
     this.dlgPages = pages.length ? pages : ['']
     this.dlgPage = 0

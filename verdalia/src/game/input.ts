@@ -8,6 +8,9 @@ export class Input {
   released = new Set<Btn>()
   private prev = new Set<Btn>()
   private dirStack: Dir[] = []
+  private pulse = new Set<Btn>()
+  private stickyDir: Dir | null = null
+  private stickyLeft = 0
   private unbind: Array<() => void> = []
 
   attach() {
@@ -15,6 +18,7 @@ export class Input {
       const b = mapKey(e.code)
       if (!b) return
       e.preventDefault()
+      if (e.repeat) return
       this.set(b, true)
     }
     const onUp = (e: KeyboardEvent) => {
@@ -26,6 +30,8 @@ export class Input {
     const onBlur = () => {
       this.down.clear()
       this.dirStack = []
+      this.stickyDir = null
+      this.stickyLeft = 0
     }
     window.addEventListener('keydown', onDown, { passive: false })
     window.addEventListener('keyup', onUp, { passive: false })
@@ -42,16 +48,18 @@ export class Input {
     this.unbind = []
     this.down.clear()
     this.dirStack = []
+    this.pulse.clear()
   }
 
   set(btn: Btn, value: boolean) {
     if (value) {
-      if (!this.down.has(btn)) {
-        this.down.add(btn)
-        if (isDir(btn)) {
-          this.dirStack = this.dirStack.filter((d) => d !== btn)
-          this.dirStack.unshift(btn)
-        }
+      this.pulse.add(btn)
+      this.down.add(btn)
+      if (isDir(btn)) {
+        this.dirStack = this.dirStack.filter((d) => d !== btn)
+        this.dirStack.unshift(btn)
+        this.stickyDir = btn
+        this.stickyLeft = 6
       }
     } else {
       this.down.delete(btn)
@@ -60,19 +68,25 @@ export class Input {
   }
 
   tick() {
+    if (this.stickyLeft > 0) {
+      this.stickyLeft--
+      if (this.stickyLeft === 0) this.stickyDir = null
+    }
     this.pressed.clear()
     this.released.clear()
     for (const b of this.down) {
       if (!this.prev.has(b)) this.pressed.add(b)
     }
+    for (const b of this.pulse) this.pressed.add(b)
+    this.pulse.clear()
     for (const b of this.prev) {
-      if (!this.down.has(b)) this.released.add(b)
+      if (!this.down.has(b) && !this.pressed.has(b)) this.released.add(b)
     }
     this.prev = new Set(this.down)
   }
 
   dir(): Dir | null {
-    return this.dirStack[0] ?? null
+    return this.dirStack[0] ?? (this.stickyLeft > 0 ? this.stickyDir : null)
   }
 
   clearDirs() {

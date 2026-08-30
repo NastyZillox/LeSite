@@ -34,7 +34,17 @@ export default function App() {
           <span className="led dim" />
         </div>
         <div className="screen">
-          <canvas ref={canvasRef} width={240} height={160} />
+          <canvas
+            ref={canvasRef}
+            width={240}
+            height={160}
+            onPointerDown={(e) => {
+              e.preventDefault()
+              input.set('a', true)
+            }}
+            onPointerUp={() => input.set('a', false)}
+            onPointerCancel={() => input.set('a', false)}
+          />
         </div>
         <p className="hint">Flèches / WASD · A: Z/Espace · B: X · START: Échap · Courir: B</p>
       </div>
